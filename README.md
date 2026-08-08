@@ -39,7 +39,7 @@
 
 **MACD-BottomScreener** 是一款专为 A 股市场设计的**低位抄底量化选股工具**。
 
-当标的经历深度回调后，传统趋势指标往往存在滞后性。本系统通过 **baostock** 数据源自动获取全市场日 K 线，多进程并发计算 MACD 指标，结合**绿柱连续缩小（空头动量衰减）**、**柱值逼近零轴**与**DIF-DEA 金叉前夕收敛**等多重因子，精准捕捉空头力量衰竭、底部拐点初显的标的，并自动导出结构化 Excel 报表供复盘决策。
+当标的经历深度回调后，传统趋势指标往往存在滞后性。本系统通过 **baostock** 数据源自动获取全市场日 K 线，多进程并发计算 MACD 指标，结合**绿柱连续缩小**、**柱值逼近零轴**与**DIF-DEA 金叉前夕收敛**等多重因子，精准捕捉空头力量衰竭、底部拐点初显的标的，并自动导出结构化 Excel 报表供复盘决策。
 
 ---
 
@@ -84,7 +84,7 @@ $$\text{MACD 柱值} = 2 \times (\text{DIF} - \text{DEA})$$
 最新 MACD 绿柱绝对值极小，收缩至 **0.08 临界值以内**，处于马上由绿翻红、多空切换的关键拐点位置。
 
 #### 条件四：双线收敛 · 低位金叉前夜
-DIF 持续处于 DEA 下方（保证绝对低位），且 DIF 与 DEA 的间距持续缩小，双线逐渐粘合蓄力，即将形成低位金叉反转。
+DIF 持续处于 DEA 下方，且 DIF 与 DEA 的间距持续缩小，双线逐渐粘合蓄力，即将形成低位金叉反转。
 
 > 同时满足以上四重条件，即为标准**空头衰竭、底部蓄力、即将反弹**的抄底形态。
 
@@ -151,7 +151,7 @@ python test.py
 | `LOOKBACK_DAYS` | `5` | 绿柱缩小的观察天数 |
 | `HIST_NEAR_ZERO` | `0.08` | 柱值逼近零轴的阈值（放宽可提高命中率） |
 | `MIN_HISTORY_DAYS` | `60` | 计算 MACD 所需最少 K 线数量 |
-| `PROCESS_WORKERS` | `8` | 并发进程数（视 CPU 核数调整） |
+| `PROCESS_WORKERS` | `8` | 并发进程数 |
 
 > 💡 **提示**：若扫描结果为空，可适当调大 `HIST_NEAR_ZERO`（如改为 `0.15`）放宽筛选条件。
 
@@ -159,15 +159,15 @@ python test.py
 
 <table>
   <tr>
-    <td align="center"><img src="images/6eccaf4dd6827a104cc61dc936bb44b2.png" width="100%"><br/><b>MACD 信号示例 1</b></td>
-    <td align="center"><img src="images/05e3c8c8119589358746d8467ef82744.jpg" width="100%"><br/><b>MACD 信号示例 2</b></td>
+    <td align="center"><img src="images/6eccaf4dd6827a104cc61dc936bb44b2.png" width="100%"><br/><b>运行效果示例</b></td>
+    <td align="center"><img src="images/05e3c8c8119589358746d8467ef82744.jpg" width="100%"><br/><b>信号示例 1</b></td>
   </tr>
   <tr>
-    <td align="center"><img src="images/1c4dd4510c6521c1c3cb52f82c89d5cc.jpg" width="100%"><br/><b>选股结果示例</b></td>
-    <td align="center"><img src="images/6571294c0cd532b6291e66051fa0b7b6.jpg" width="100%"><br/><b>运行效果示例</b></td>
+    <td align="center"><img src="images/1c4dd4510c6521c1c3cb52f82c89d5cc.jpg" width="100%"><br/><b>信号示例 2</b></td>
+    <td align="center"><img src="images/6571294c0cd532b6291e66051fa0b7b6.jpg" width="100%"><br/><b>信号示例 3</b></td>
   </tr>
   <tr>
-    <td align="center" colspan="2"><img src="images/ca504ce9dbdb503f029a7dc340a8ed00.jpg" width="60%"><br/><b>更多效果示例</b></td>
+    <td align="center" colspan="2"><img src="images/ca504ce9dbdb503f029a7dc340a8ed00.jpg" width="60%"><br/><b>信号示例 4</b></td>
   </tr>
 </table>
 
