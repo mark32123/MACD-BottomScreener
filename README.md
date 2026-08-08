@@ -157,15 +157,19 @@ python test.py
 
 ## 📊 效果展示
 
-![MACD 信号示例 1](images/6eccaf4dd6827a104cc61dc936bb44b2.png)
-
-![MACD 信号示例 2](images/05e3c8c8119589358746d8467ef82744.jpg)
-
-![选股结果示例](images/1c4dd4510c6521c1c3cb52f82c89d5cc.jpg)
-
-![运行效果示例](images/6571294c0cd532b6291e66051fa0b7b6.jpg)
-
-![更多效果示例](images/ca504ce9dbdb503f029a7dc340a8ed00.jpg)
+<table>
+  <tr>
+    <td align="center"><img src="images/6eccaf4dd6827a104cc61dc936bb44b2.png" width="100%"><br/><b>MACD 信号示例 1</b></td>
+    <td align="center"><img src="images/05e3c8c8119589358746d8467ef82744.jpg" width="100%"><br/><b>MACD 信号示例 2</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/1c4dd4510c6521c1c3cb52f82c89d5cc.jpg" width="100%"><br/><b>选股结果示例</b></td>
+    <td align="center"><img src="images/6571294c0cd532b6291e66051fa0b7b6.jpg" width="100%"><br/><b>运行效果示例</b></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2"><img src="images/ca504ce9dbdb503f029a7dc340a8ed00.jpg" width="60%"><br/><b>更多效果示例</b></td>
+  </tr>
+</table>
 
 ---
 
