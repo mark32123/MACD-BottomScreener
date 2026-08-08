@@ -27,6 +27,7 @@
   - [1. 环境准备](#1-环境准备)
   - [2. 克隆项目与安装依赖](#2-克隆项目与安装依赖)
   - [3. 运行选股程序](#3-运行选股程序)
+  - [4. 单股调试（可选）](#4-单股调试可选)
 - [⚙️ 核心参数配置](#-核心参数配置)
 - [📊 效果展示](#-效果展示)
 - [⚠️ 免责声明](#-免责声明)
@@ -87,7 +88,7 @@ DIF 持续处于 DEA 下方（保证绝对低位），且 DIF 与 DEA 的间距�
 
 > 同时满足以上四重条件，即为标准**空头衰竭、底部蓄力、即将反弹**的抄底形态。
 
-
+---
 
 ## 🚀 快速开始
 
@@ -100,9 +101,10 @@ python --version
 ```
 
 ### 2. 克隆项目与安装依赖
+
 ```bash
 # 克隆仓库
-git clone [https://github.com/mark32123/MACD-BottomScreener.git](https://github.com/mark32123/MACD-BottomScreener.git)
+git clone https://github.com/mark32123/MACD-BottomScreener.git
 
 # 进入项目目录
 cd MACD-BottomScreener
@@ -110,37 +112,78 @@ cd MACD-BottomScreener
 # 安装依赖
 pip install -r requirements.txt
 ```
+
+`requirements.txt` 核心依赖：
+
+```text
+pandas>=1.5.0
+numpy>=1.22.0
+baostock>=0.8.9
+openpyxl>=3.0.0
+matplotlib>=3.5.0   # 单股调试画图用
+```
+
 ### 3. 运行选股程序
+
 ```bash
 python select_tool.py
 ```
 
-## ⚙️ 核心参数配置
-```bash
-# ==========================================
-# MACD 基础周期参数设置
-# ==========================================
-SHORT_PERIOD = 12       # 快线周期 (EMA12)
-LONG_PERIOD = 26        # 慢线周期 (EMA26)
-SIGNAL_PERIOD = 9       # 信号线周期 (DEA9)
+扫描完成后，当前目录将生成 `MACD抄底选股_YYYYMMDD_HHMMSS.xlsx` 结果报表。
 
-# ==========================================
-# 抄底筛选阈值设置
-# ==========================================
-DIF_MAX_THRESHOLD = 0.0 # 要求 DIF 必须处于零轴下方 (低位: DIF < 0)
-DIF_DEA_DIFF_MAX = 0.05 # DIF 与 DEA 的最大粘合差值绝对值 |DIF - DEA| <= 0.05
-HIST_BAR_DECAY_DAYS = 3 # 绿柱连续收缩的最少天数 (动量衰减确认)
-VOLUME_RATIO_MIN = 0.4  # 近5日柱起量比最小值限制 (过滤死寂无量股)
+### 4. 单股调试（可选）
+
+修改 `test.py` 中的 `TEST_CODE` / `TEST_MARKET` 后运行，可查看单只股票的 MACD 数据与走势图：
+
+```bash
+python test.py
 ```
+
+## ⚙️ 核心参数配置
+
+所有参数集中在 `select_tool.py` 文件顶部的"可调参数"区：
+
+| 参数 | 默认值 | 说明 |
+|------|:---:|------|
+| `MACD_FAST` | `12` | MACD 快线 EMA 周期 |
+| `MACD_SLOW` | `26` | MACD 慢线 EMA 周期 |
+| `MACD_SIGNAL` | `9` | DEA 信号线周期 |
+| `LOOKBACK_DAYS` | `5` | 绿柱缩小的观察天数 |
+| `HIST_NEAR_ZERO` | `0.08` | 柱值逼近零轴的阈值（放宽可提高命中率） |
+| `MIN_HISTORY_DAYS` | `60` | 计算 MACD 所需最少 K 线数量 |
+| `PROCESS_WORKERS` | `8` | 并发进程数（视 CPU 核数调整） |
+
+> 💡 **提示**：若扫描结果为空，可适当调大 `HIST_NEAR_ZERO`（如改为 `0.15`）放宽筛选条件。
 
 ## 📊 效果展示
 
+![MACD 信号示例 1](images/6eccaf4dd6827a104cc61dc936bb44b2.png)
+
+![MACD 信号示例 2](images/05e3c8c8119589358746d8467ef82744.jpg)
+
+![选股结果示例](images/1c4dd4510c6521c1c3cb52f82c89d5cc.jpg)
+
+![运行效果示例](images/6571294c0cd532b6291e66051fa0b7b6.jpg)
+
+![更多效果示例](images/ca504ce9dbdb503f029a7dc340a8ed00.jpg)
+
+---
+
 ## ⚠️ 免责声明
-本项目仅供学术研究、量化技术交流及 Python 编程学习使用，不构成任何投资建议、推荐或买卖依据。股市有风险，投资需谨慎。投资者据此策略及程序操作，风险自担。作者及贡献者不对因使用本程序或数据造成的任何直接或间接投资损失承担法律责任。
+
+> [!WARNING]
+> **免责声明 (Disclaimer)**
+>
+> 本项目仅供学术研究、量化技术交流及 Python 编程学习使用，**不构成任何投资建议、推荐或买卖依据**。
+>
+> 股市有风险，投资需谨慎。投资者据此策略及程序操作，风险自担。
+>
+> 作者及贡献者不对因使用本程序或数据造成的任何直接或间接投资损失承担法律责任。
 
 
 ## 🤝 贡献与支持
 
-欢迎提交 Issue 或 Pull Request 来优化选股因子、提升数据效率或扩充策略功能！如果这个项目对你的量化研究有所帮助，欢迎点
-个 ⭐ Star 支持一下！Made with ❤️ for Quant Traders & Developers
+欢迎提交 Issue 或 Pull Request 来优化选股因子、提升数据效率或扩充策略功能！如果这个项目对你的量化研究有所帮助，欢迎点个 ⭐ Star 支持一下！
+
+Made with ❤️ for Quant Traders & Developers
 
