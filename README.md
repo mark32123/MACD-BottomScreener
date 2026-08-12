@@ -30,6 +30,7 @@
   - [4. 单股调试（可选）](#4-单股调试可选)
 - [⚙️ 核心参数配置](#-核心参数配置)
 - [📊 效果展示](#-效果展示)
+- [❓ 常見問題](#-常見問題)
 - [⚠️ 免责声明](#-免责声明)
 - [🤝 贡献与支持](#-贡献与支持)
 
@@ -172,6 +173,67 @@ python test.py
 </table>
 
 ---
+
+## ❓ 常見問題
+### ip被拉黑名單
+
+#### 联系官方解除
+
+发邮件至 **baostock@163.com**，说明情况请求解除 IP 限制，例如：
+
+```
+标题：IP 被加入黑名单，申请解除
+
+您好，
+我使用 baostock 调试脚本时因短时高频连接触发了 IP 风控，
+现登录返回错误码 10001011（黑名单用户）。
+我的公网 IP 是：<你的出口 IP>
+请协助解除限制，我将控制访问频率，感谢！
+```
+
+> 如何查询公网 IP：`curl ifconfig.me` 或访问 `https://ifconfig.me`
+
+#### 更换出口 IP
+
+##### 方式 A：重启光猫/路由器
+
+宽带为**动态 IP** 时，重启光猫/路由器即可获取新公网 IP，立即解除。
+（重启后如 IP 未变，可多试一次或稍等几分钟）
+
+##### 方式 B：VPN / 梯子「全局（TUN）」模式
+
+**关键前提：必须开启梯子的「全局 / TUN / 虚拟网卡」模式**，只开「系统代理」无效！
+
+| 原因 | 说明 |
+|---|---|
+| baostock 使用 10030 端口**原始 TCP socket** 连接 | 不走 HTTP 代理 |
+| 「系统代理/PAC 模式」只接管浏览器等 HTTP 流量 | baostock 流量仍从本机宽带 IP 出去，黑名单照旧生效 |
+| 「TUN 模式/全局模式」在网卡层接管**所有流量** | baostock 连接走 VPN 出口 IP，绕过黑名单 |
+
+各客户端开启方式：
+
+| 客户端 | 操作 |
+|---|---|
+| Clash Verge / Clash for Windows | 主界面开启「**TUN 模式**」（首次需安装服务模式/管理员权限） |
+| v2rayN | 开启「**TUN 模式**」，或「路由 → 全局」 |
+| 其他梯子 | 找「全局代理 / 虚拟网卡模式」开关，勿用「规则模式」 |
+
+**验证是否生效**（开启后执行）：
+
+```powershell
+& "d:/develop/Projectes/A-share selection tools/.venv/Scripts/python.exe" -u -c "import os; [os.environ.pop(k,None) for k in list(os.environ) if 'proxy' in k.lower()]; os.environ['NO_PROXY']='*'; import urllib.request; print('IPv4出口:', urllib.request.urlopen('https://api.ipify.org', timeout=15).read().decode()); import baostock as bs; lg=bs.login(); print('baostock登录:', lg.error_code, lg.error_msg); bs.logout()"
+```
+
+判定标准：
+
+- ✅ `IPv4出口` 显示为 VPN 节点 IP（不再是 `2409:895b:` 开头的电信 IP）→ TUN 生效
+- ✅ `baostock登录: 0 success` → 黑名单已绕过，可正常跑脚本
+- ❌ 若仍报 `10001011` → 该节点 IP 可能也被拉黑（共享 IP，概率较低），**换个节点**再试
+
+#### 等待自动解除
+
+- baostock 官网黑名单页面**每日更新**，理论上限制会随时间解除
+- 解除周期不确定（数小时～数天），且**反复尝试登录会刷新/延长封禁**，等待期间请勿运行脚本
 
 ## ⚠️ 免责声明
 
